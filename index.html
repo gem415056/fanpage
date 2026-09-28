@@ -149,7 +149,7 @@
 
     /* 인용 트윗 카드 */
     .quote-box {
-      margin-top: 10px;
+      margin: 10px 0 14px 0;
       border: 1.5px solid var(--border-color);
       border-radius: 14px;
       padding: 12px 14px 10px 14px;
@@ -157,6 +157,7 @@
     }
     .quote-box .tweet-header { margin-bottom: 4px; }
     .quote-box .tweet-text { margin: 0; line-height: 1.35; }
+    .detail-tweet .quote-box .tweet-text { font-size: 16px !important; margin: 0 !important; line-height: 1.35 !important; }
 
     /* 액션 버튼 바 */
     .tweet-actions { display: flex; justify-content: space-between; max-width: 420px; margin-top: 12px; }
@@ -184,11 +185,15 @@
     .detail-tweet { padding: 18px 24px; border-bottom: 1px solid var(--border-color); }
     .detail-tweet .tweet-text { font-size: 19px; line-height: 1.45; margin: 12px 0; }
     .detail-time { font-size: 15px; color: var(--text-sub); margin-bottom: 12px; }
-    .detail-stats {
-      display: flex; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-sub);
+    .detail-stats-actions {
+      display: flex; gap: 20px; padding: 10px 0; border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color); align-items: center;
     }
-    .detail-stats strong { color: var(--text-main); }
+    .detail-stats-actions .action-btn { font-size: 15px; gap: 7px; padding: 4px 6px; color: var(--text-sub) !important; }
+    .detail-stats-actions .action-btn span { color: var(--text-sub) !important; }
+    .detail-stats-actions .action-btn strong { color: var(--text-main) !important; }
+    .detail-stats-actions .action-btn.retweet.active svg { fill: var(--retweet-color) !important; }
+    .detail-stats-actions .action-btn.like.active svg { fill: var(--like-color) !important; }
     /* 대댓글 우측 들여쓰기 제거 (상위 댓글과 100% 동일한 수직 1자 정렬) */
     .nested-reply { padding-left: 0; position: relative; }
     .nested-connector { display: none; }
@@ -539,14 +544,13 @@
           <div class="tweet-text">${formatText(tweet.content)}</div>
           ${quoteHTML}
           <div class="detail-time">${tweet.timestamp}</div>
-          <div class="detail-stats">
-            <span><strong class="stat-rt-cnt">${tweet.retweets || 0}</strong> 리트윗</span>
-            <span><strong class="stat-like-cnt">${tweet.likes || 0}</strong> 마음에 들어요</span>
-          </div>
-          <div class="tweet-actions" style="max-width:100%; justify-content:space-around; padding-top:8px;">
-            <button class="action-btn reply">${ICONS.reply} <span>${repliesCnt || ''}</span></button>
-            <button class="action-btn retweet ${isRetweeted}">${ICONS.retweet} <span>${tweet.retweets || 0}</span></button>
-            <button class="action-btn like ${isLiked}">${ICONS.like} <span>${tweet.likes || 0}</span></button>
+          <div class="detail-stats-actions">
+            <button class="action-btn retweet ${isRetweeted}">
+              ${ICONS.retweet} <span><strong>${tweet.retweets || 0}</strong> 리트윗</span>
+            </button>
+            <button class="action-btn like ${isLiked}">
+              ${ICONS.like} <span><strong>${tweet.likes || 0}</strong> 마음에 들어요</span>
+            </button>
           </div>
         </div>
         <div class="thread-replies-list">${repliesHTML}</div>
@@ -596,18 +600,24 @@
               target._userLiked = !target._userLiked;
               target.likes = (target.likes || 0) + (target._userLiked ? 1 : -1);
               actionBtn.classList.toggle('active', target._userLiked);
-              const span = actionBtn.querySelector('span');
-              if (span) span.textContent = target.likes || '';
-              const statLike = el.querySelector('.stat-like-cnt');
-              if (statLike) statLike.textContent = target.likes || 0;
+              const strong = actionBtn.querySelector('strong');
+              if (strong) {
+                strong.textContent = target.likes || 0;
+              } else {
+                const span = actionBtn.querySelector('span');
+                if (span) span.textContent = target.likes || '';
+              }
             } else if (actionBtn.classList.contains('retweet')) {
               target._userRetweeted = !target._userRetweeted;
               target.retweets = (target.retweets || 0) + (target._userRetweeted ? 1 : -1);
               actionBtn.classList.toggle('active', target._userRetweeted);
-              const span = actionBtn.querySelector('span');
-              if (span) span.textContent = target.retweets || '';
-              const statRt = el.querySelector('.stat-rt-cnt');
-              if (statRt) statRt.textContent = target.retweets || 0;
+              const strong = actionBtn.querySelector('strong');
+              if (strong) {
+                strong.textContent = target.retweets || 0;
+              } else {
+                const span = actionBtn.querySelector('span');
+                if (span) span.textContent = target.retweets || '';
+              }
             }
             actionBtn.blur();
             // IndexedDB에 인터랙션 결과 자동 반영
