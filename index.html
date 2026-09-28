@@ -86,7 +86,8 @@
       border-bottom: 1px solid var(--border-color);
       z-index: 100;
     }
-    .header-actions-left, .header-actions-right { display: flex; align-items: center; gap: 10px; z-index: 2; }
+    .header-group { display: flex; align-items: center; gap: 24px; }
+    .header-actions-right { display: flex; align-items: center; z-index: 2; }
     .header-logo {
       position: absolute;
       left: 50%;
@@ -110,14 +111,7 @@
     #icon-sun { width: 17.5px; height: 17.5px; stroke: currentColor; stroke-width: 2.4px; stroke-linejoin: round; }
     #btn-back svg { width: 20px; height: 20px; }
 
-    /* 서브 헤더 (스레드 상세 보기 시 나타남) */
-    .thread-nav-header {
-      display: none; align-items: center; gap: 24px; padding: 10px 24px;
-      position: sticky; top: 53px; background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border-color); z-index: 90;
-    }
-    .thread-nav-header.active { display: flex; }
-    .thread-nav-title { font-size: 20px; font-weight: 700; }
+    .thread-nav-title { font-size: 20px; font-weight: 700; color: var(--text-main); }
 
     /* 트윗 레이아웃 */
     .tweet-container {
@@ -235,36 +229,34 @@
 <body>
 
   <div id="app">
-    <!-- 헤더 -->
+    <!-- 트위터 정품 단일 가변 헤더 -->
     <header>
-      <div class="header-actions-left">
+      <!-- 피드 전용 구성 (JSON 아이콘 + 정중앙 로고) -->
+      <div id="header-feed" class="header-group">
         <button id="btn-open-json" class="icon-btn" title="JSON 추가">
-          <!-- 보내주신 코드 입력 SVG -->
           <svg viewBox="0 0 122.88 121.51"><path d="M28.66,1.64H58.88L44.46,16.71H28.66a13.52,13.52,0,0,0-9.59,4l0,0a13.52,13.52,0,0,0-4,9.59v76.14H91.21a13.5,13.5,0,0,0,9.59-4l0,0a13.5,13.5,0,0,0,4-9.59V77.3l15.07-15.74V92.85a28.6,28.6,0,0,1-8.41,20.22l0,.05a28.58,28.58,0,0,1-20.2,8.39H11.5a11.47,11.47,0,0,1-8.1-3.37l0,0A11.52,11.52,0,0,1,0,110V30.3A28.58,28.58,0,0,1,8.41,10.09L8.46,10a28.58,28.58,0,0,1,20.2-8.4ZM73,76.47l-29.42,6,4.25-31.31L73,76.47ZM57.13,41.68,96.3.91A2.74,2.74,0,0,1,99.69.38l22.48,21.76a2.39,2.39,0,0,1-.19,3.57L82.28,67,57.13,41.68Z"/></svg>
         </button>
+        <svg class="header-logo" viewBox="0 0 640 640" id="btn-home">
+          <path d="M640.012 121.513c-23.528 10.524-48.875 17.516-75.343 20.634 27.118-16.24 47.858-41.977 57.756-72.615-25.347 14.988-53.516 25.985-83.363 31.866-24-25.5-58.087-41.35-95.848-41.35-72.508 0-131.21 58.736-131.21 131.198 0 10.228 1.134 20.232 3.355 29.882-109.1-5.528-205.821-57.757-270.57-137.222a131.423 131.423 0 0 0-17.764 66c0 45.497 23.102 85.738 58.347 109.207-21.508-.638-41.74-6.638-59.505-16.359v1.642c0 63.627 45.225 116.718 105.32 128.718-11.008 2.988-22.63 4.642-34.606 4.642-8.48 0-16.654-.874-24.78-2.35 16.783 52.11 65.233 90.095 122.612 91.205-44.989 35.245-101.493 56.233-163.09 56.233-10.63 0-20.988-.65-31.334-1.89 58.229 37.359 127.206 58.997 201.31 58.997 241.42 0 373.552-200.069 373.552-373.54 0-5.764-.13-11.35-.366-16.996 25.642-18.343 47.87-41.493 65.469-67.844l.059-.059z"/>
+        </svg>
       </div>
 
-      <!-- 보내주신 중앙 트위터 파랑새 SVG -->
-      <svg class="header-logo" viewBox="0 0 640 640" id="btn-home">
-        <path d="M640.012 121.513c-23.528 10.524-48.875 17.516-75.343 20.634 27.118-16.24 47.858-41.977 57.756-72.615-25.347 14.988-53.516 25.985-83.363 31.866-24-25.5-58.087-41.35-95.848-41.35-72.508 0-131.21 58.736-131.21 131.198 0 10.228 1.134 20.232 3.355 29.882-109.1-5.528-205.821-57.757-270.57-137.222a131.423 131.423 0 0 0-17.764 66c0 45.497 23.102 85.738 58.347 109.207-21.508-.638-41.74-6.638-59.505-16.359v1.642c0 63.627 45.225 116.718 105.32 128.718-11.008 2.988-22.63 4.642-34.606 4.642-8.48 0-16.654-.874-24.78-2.35 16.783 52.11 65.233 90.095 122.612 91.205-44.989 35.245-101.493 56.233-163.09 56.233-10.63 0-20.988-.65-31.334-1.89 58.229 37.359 127.206 58.997 201.31 58.997 241.42 0 373.552-200.069 373.552-373.54 0-5.764-.13-11.35-.366-16.996 25.642-18.343 47.87-41.493 65.469-67.844l.059-.059z"/>
-      </svg>
+      <!-- 스레드 전용 구성 (뒤로가기 + 게시물 타이틀) -->
+      <div id="header-thread" class="header-group" style="display: none;">
+        <button id="btn-back" class="icon-btn" title="뒤로가기">
+          <svg viewBox="0 0 24 24"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
+        </button>
+        <div class="thread-nav-title">게시물</div>
+      </div>
 
+      <!-- 우측 테마 토글 버튼 (공통 유지) -->
       <div class="header-actions-right">
-        <!-- 보내주신 달 / 해 테마 토글 SVG -->
         <button id="btn-theme-toggle" class="icon-btn" title="다크/라이트 전환">
           <svg id="icon-moon" viewBox="0 0 122.88 122.89"><path d="M49.06,1.27c2.17-0.45,4.34-0.77,6.48-0.98c2.2-0.21,4.38-0.31,6.53-0.29c1.21,0.01,2.18,1,2.17,2.21 c-0.01,0.93-0.6,1.72-1.42,2.03c-9.15,3.6-16.47,10.31-20.96,18.62c-4.42,8.17-6.1,17.88-4.09,27.68l0.01,0.07 c2.29,11.06,8.83,20.15,17.58,25.91c8.74,5.76,19.67,8.18,30.73,5.92l0.07-0.01c7.96-1.65,14.89-5.49,20.3-10.78 c5.6-5.47,9.56-12.48,11.33-20.16c0.27-1.18,1.45-1.91,2.62-1.64c0.89,0.21,1.53,0.93,1.67,1.78c2.64,16.2-1.35,32.07-10.06,44.71 c-8.67,12.58-22.03,21.97-38.18,25.29c-16.62,3.42-33.05-0.22-46.18-8.86C14.52,104.1,4.69,90.45,1.27,73.83 C-2.07,57.6,1.32,41.55,9.53,28.58C17.78,15.57,30.88,5.64,46.91,1.75c0.31-0.08,0.67-0.16,1.06-0.25l0.01,0l0,0L49.06,1.27 L49.06,1.27z"/></svg>
           <svg id="icon-sun" style="display:none;" viewBox="0 0 122.88 122.88"><path d="M30,13.21A3.93,3.93,0,1,1,36.8,9.27L41.86,18A3.94,3.94,0,1,1,35.05,22L30,13.21Zm31.45,13A35.23,35.23,0,1,1,36.52,36.52,35.13,35.13,0,0,1,61.44,26.2ZM58.31,4A3.95,3.95,0,1,1,66.2,4V14.06a3.95,3.95,0,1,1-7.89,0V4ZM87.49,10.1A3.93,3.93,0,1,1,94.3,14l-5.06,8.76a3.93,3.93,0,1,1-6.81-3.92l5.06-8.75ZM109.67,30a3.93,3.93,0,1,1,3.94,6.81l-8.75,5.06a3.94,3.94,0,1,1-4-6.81L109.67,30Zm9.26,28.32a3.95,3.95,0,1,1,0,7.89H108.82a3.95,3.95,0,1,1,0-7.89Zm-6.15,29.18a3.93,3.93,0,1,1-3.91,6.81l-8.76-5.06A3.93,3.93,0,1,1,104,82.43l8.75,5.06ZM92.89,109.67a3.93,3.93,0,1,1-6.81,3.94L81,104.86a3.94,3.94,0,0,1,6.81-4l5.06,8.76Zm-28.32,9.26a3.95,3.95,0,1,1-7.89,0V108.82a3.95,3.95,0,1,1,7.89,0v10.11Zm-29.18-6.15a3.93,3.93,0,0,1-6.81-3.91l5.06-8.76A3.93,3.93,0,1,1,40.45,104l-5.06,8.75ZM13.21,92.89a3.93,3.93,0,1,1-3.94-6.81L18,81A3.94,3.94,0,1,1,22,87.83l-8.76,5.06ZM4,64.57a3.95,3.95,0,1,1,0-7.89H14.06a3.95,3.95,0,1,1,0,7.89ZM10.1,35.39A3.93,3.93,0,1,1,14,28.58l8.76,5.06a3.93,3.93,0,1,1-3.92,6.81L10.1,35.39Z"/></svg>
         </button>
       </div>
     </header>
-
-    <!-- 스레드 서브헤더 (뒤로가기 화살표) -->
-    <div id="thread-nav-header" class="thread-nav-header">
-      <button id="btn-back" class="icon-btn" title="뒤로가기">
-        <svg viewBox="0 0 24 24"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"/></svg>
-      </button>
-      <div class="thread-nav-title">게시물</div>
-    </div>
 
     <!-- 피드 뷰 -->
     <main id="feed-view">
@@ -407,12 +399,14 @@
     const threadView = document.getElementById('thread-view');
     const tweetsList = document.getElementById('tweets-list');
     const emptyState = document.getElementById('empty-state');
-    const threadNavHeader = document.getElementById('thread-nav-header');
+    const headerFeed = document.getElementById('header-feed');
+    const headerThread = document.getElementById('header-thread');
 
     function renderFeedView() {
       feedView.style.display = 'block';
       threadView.style.display = 'none';
-      threadNavHeader.classList.remove('active');
+      headerFeed.style.display = 'flex';
+      headerThread.style.display = 'none';
       window.scrollTo(0, 0);
 
       if (tweetsData.length === 0) {
@@ -488,7 +482,8 @@
 
       feedView.style.display = 'none';
       threadView.style.display = 'block';
-      threadNavHeader.classList.add('active');
+      headerFeed.style.display = 'none';
+      headerThread.style.display = 'flex';
       window.scrollTo(0, 0);
 
       const bg = getAvatarBg(tweet.author.handle || tweet.author.name);
