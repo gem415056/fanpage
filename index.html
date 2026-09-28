@@ -159,7 +159,7 @@
     .quote-box .tweet-text { margin: 0; line-height: 1.35; }
     .detail-tweet .quote-box .tweet-text { font-size: 16px !important; margin: 0 !important; line-height: 1.35 !important; }
 
-    /* 액션 버튼 바 (3구역 독립 그리드 시스템) */
+    /* 액션 버튼 바 (완전 격리 독립 3구역 시스템) */
     .tweet-actions {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -169,13 +169,14 @@
       align-items: center;
     }
     .action-btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px;
       background: transparent !important; border: none; outline: none;
-      color: var(--text-sub); font-size: 14px; cursor: pointer; padding: 4px 6px;
+      color: var(--text-sub); font-size: 14px; cursor: pointer; padding: 4px 0;
       border-radius: 9999px; transition: color 0.15s; line-height: 1;
       -webkit-tap-highlight-color: transparent;
       font-variant-numeric: tabular-nums;
     }
+    .tweet-container .action-btn { width: 54px; }
     .action-btn.reply { justify-self: start; }
     .action-btn.retweet { justify-self: center; }
     .action-btn.like { justify-self: end; }
@@ -184,9 +185,11 @@
     .action-btn.retweet svg { width: 19px; height: 15px; }
     .action-btn.like svg { width: 17px; height: 15px; }
     .action-btn span {
-      display: inline-flex; align-items: center; line-height: 1;
+      display: inline-block; line-height: 1;
       transform: translateY(1.5px);
       font-variant-numeric: tabular-nums;
+      min-width: 18px;
+      text-align: left;
     }
     @media (hover: hover) and (pointer: fine) {
       .action-btn.reply:hover { color: var(--primary); }
@@ -201,11 +204,16 @@
     .detail-tweet .tweet-text { font-size: 19px; line-height: 1.45; margin: 12px 0; }
     .detail-time { font-size: 15px; color: var(--text-sub); margin-bottom: 12px; }
     .detail-stats-actions {
-      display: flex; justify-content: flex-end; gap: 20px; padding: 10px 0;
+      display: flex; justify-content: flex-end; gap: 16px; padding: 10px 0;
       border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
       align-items: center;
     }
-    .detail-stats-actions .action-btn { font-size: 15px; gap: 7px; padding: 4px 6px; color: var(--text-sub) !important; }
+    .detail-stats-actions .action-btn {
+      font-size: 15px; gap: 7px; padding: 4px 0; color: var(--text-sub) !important;
+      justify-content: flex-start;
+    }
+    .detail-stats-actions .action-btn.retweet { width: 85px; }
+    .detail-stats-actions .action-btn.like { width: 130px; }
     .detail-stats-actions .action-btn span { color: var(--text-sub) !important; }
     .detail-stats-actions .action-btn strong {
       color: var(--text-main) !important; margin-right: 4px;
