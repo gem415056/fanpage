@@ -136,11 +136,12 @@
     }
     .avatar svg { width: 100%; height: 100%; fill: #ffffff; }
 
-    /* 스레드 수직 연결선 */
+    /* 스레드 수직 연결선 (트위터 1자 관통 라인) */
     .thread-line {
       position: absolute; width: 2px; background-color: var(--thread-line);
-      left: 21px; top: 50px; bottom: -14px; z-index: 1;
+      left: 21px; top: 46px; bottom: -29px; z-index: 1;
     }
+    .tweet-container.thread-connected { border-bottom-color: transparent; }
 
     .tweet-content-wrapper { flex: 1; min-width: 0; }
     .tweet-header { display: flex; align-items: baseline; gap: 6px; margin-bottom: 3px; }
@@ -194,11 +195,9 @@
       border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-sub);
     }
     .detail-stats strong { color: var(--text-main); }
-    .nested-reply { padding-left: 56px; position: relative; }
-    .nested-connector {
-      position: absolute; left: 36px; top: 0; bottom: 50%; width: 2px;
-      border-left: 2px solid var(--thread-line);
-    }
+    /* 대댓글 우측 들여쓰기 제거 (상위 댓글과 100% 동일한 수직 1자 정렬) */
+    .nested-reply { padding-left: 0; position: relative; }
+    .nested-connector { display: none; }
 
     /* 비어있는 상태 */
     .empty-state { padding: 80px 24px; text-align: center; color: var(--text-sub); }
@@ -450,7 +449,7 @@
       }
 
       return `
-        <article class="tweet-container" data-tweet-id="${tweet.id}">
+        <article class="tweet-container ${hasThreadLine ? 'thread-connected' : ''}" data-tweet-id="${tweet.id}">
           <div class="avatar-wrapper">
             <div class="avatar" style="background-color: ${bg};">${ICONS.profile}</div>
             ${hasThreadLine ? '<div class="thread-line"></div>' : ''}
@@ -511,19 +510,17 @@
         `;
       }
 
-      // 답글 및 대댓글 렌더링
+      // 답글 및 대댓글 렌더링 (트위터 1자 타래 연결)
       let repliesHTML = '';
       if (tweet.replies && tweet.replies.length > 0) {
         repliesHTML = tweet.replies.map(r => {
           const hasSubReplies = r.replies && r.replies.length > 0;
           let subRepliesHTML = '';
           if (hasSubReplies) {
-            subRepliesHTML = r.replies.map(sub => `
-              <div class="nested-reply">
-                <div class="nested-connector"></div>
-                ${createTweetCardHTML(sub, false)}
-              </div>
-            `).join('');
+            subRepliesHTML = r.replies.map((sub, sIdx) => {
+              const isLastSub = sIdx === r.replies.length - 1;
+              return createTweetCardHTML(sub, !isLastSub);
+            }).join('');
           }
           return `
             <div>
