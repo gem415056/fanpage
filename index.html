@@ -159,8 +159,8 @@
     .quote-box .tweet-text { margin: 0; line-height: 1.35; }
     .detail-tweet .quote-box .tweet-text { font-size: 16px !important; margin: 0 !important; line-height: 1.35 !important; }
 
-    /* 액션 버튼 바 */
-    .tweet-actions { display: flex; max-width: 420px; margin-top: 12px; }
+    /* 액션 버튼 바 (본래의 시원한 3분할 복원) */
+    .tweet-actions { display: flex; justify-content: space-between; width: 100%; max-width: 420px; margin-top: 12px; }
     .action-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       background: transparent !important; border: none; outline: none;
@@ -169,7 +169,6 @@
       -webkit-tap-highlight-color: transparent;
       font-variant-numeric: tabular-nums;
     }
-    .tweet-container .action-btn { flex: 1; justify-content: flex-start; }
     .action-btn svg { fill: currentColor; display: block; flex-shrink: 0; }
     .action-btn.reply svg { width: 15px; height: 15px; }
     .action-btn.retweet svg { width: 19px; height: 15px; }
@@ -178,6 +177,7 @@
       display: inline-flex; align-items: center; line-height: 1;
       transform: translateY(1.5px);
       font-variant-numeric: tabular-nums;
+      min-width: 14px;
     }
     @media (hover: hover) and (pointer: fine) {
       .action-btn.reply:hover { color: var(--primary); }
